@@ -1,0 +1,4 @@
+{
+	"title": "坐标探针",
+	"description": "校验 th18.v1.00a 的 .text 签名，然后轮询 PLAYER_PTR，把 x/y/z(float)、sub(1/128 定点)、focus、state 以及 IN-RANGE 判定写入 game\th18_probe.log。纯只读，不改游戏行为。"
+}

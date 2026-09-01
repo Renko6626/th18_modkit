@@ -1,0 +1,17 @@
+# Windows-only 项目：文本文件统一 CRLF（.bat 用 LF 会出问题）
+* text=auto eol=crlf
+
+# 二进制，禁止任何行尾转换
+*.dll binary
+*.exe binary
+*.dat binary
+*.pem binary
+*.tags binary
+*.png binary
+*.ttf binary
+*.anm binary
+*.ecl binary
+*.msg binary
+*.std binary
+*.sht binary
+*.rpy binary

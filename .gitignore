@@ -1,0 +1,16 @@
+# 游戏本体不进仓库（版权 + 体积）。协作者自备，见 docs/setup.md
+/game/*
+!/game/README.md
+
+# 启动器每次运行都会重写的东西
+/thcrap/config/games.js
+/thcrap/config/renko_th18.js
+/mods/enabled.json
+
+# 启动器暂存进去的 mod dll（源文件在 mods/）
+/thcrap/bin/mod_*.dll
+
+# 运行产物
+/thcrap/logs/*
+!/thcrap/logs/.gitkeep
+*.log

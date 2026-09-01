@@ -1,0 +1,9 @@
+{
+	"target": "th18",
+	"patches": [
+		"th18_mouse_control"
+	],
+	"dlls": [
+		"th18_mouse.dll"
+	]
+}
