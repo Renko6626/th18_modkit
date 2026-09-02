@@ -10,6 +10,11 @@
       "access": "RW",
       "title": "allocate_new_card 跳转表搬迁目标（255 项）"
     },
+    "th18_card_unlocked": {
+      "size": "0x100",
+      "access": "RW",
+      "title": "unlocked_cards 影子数组（256 字节，下标 = card id；DLL 填）"
+    },
     "th18_card_table_patch_init": {
       "code": "fc60bf<codecave:th18_card_table>be<Rxc53c0>b9f2020000f3a5bbc5000000be<codecave:th18_card_table+b60>b90d000000f3a54b75f1bf<codecave:th18_card_jumptable>be<Rx12dac>b939000000f3a5b8<Rx11489>b9c6000000f3ab61c3",
       "export": true,
@@ -701,6 +706,60 @@
       "code": "81fb500e0000",
       "expected": "81fb640d0000",
       "title": "商店循环上界 → +0xe50（仍只看前 56 个 id）"
+    },
+    "unlock_41440b": {
+      "addr": "0x41440b",
+      "code": "388a<codecave:th18_card_unlocked>90",
+      "expected": "388c1088f50500",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,r8 [eax+edx+0x5f588] → [edx+SHADOW]（eax = 存档指针）"
+    },
+    "unlock_4149ec": {
+      "addr": "0x4149ec",
+      "code": "80be<codecave:th18_card_unlocked>0090",
+      "expected": "80bc0688f5050000",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,imm8 [esi+eax+0x5f588] → [esi+SHADOW]（eax = 存档指针）"
+    },
+    "unlock_416590": {
+      "addr": "0x416590",
+      "code": "80bb<codecave:th18_card_unlocked>0090",
+      "expected": "80bc1888f5050000",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,imm8 [eax+ebx+0x5f588] → [ebx+SHADOW]（eax = 存档指针）"
+    },
+    "unlock_41694e": {
+      "addr": "0x41694e",
+      "code": "80ba<codecave:th18_card_unlocked>0090",
+      "expected": "80bc1088f5050000",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,imm8 [eax+edx+0x5f588] → [edx+SHADOW]（eax = 存档指针）"
+    },
+    "unlock_416e3d": {
+      "addr": "0x416e3d",
+      "code": "3882<codecave:th18_card_unlocked>90",
+      "expected": "38840a88f50500",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,r8 [edx+ecx+0x5f588] → [edx+SHADOW]（ecx = 存档指针）"
+    },
+    "unlock_417125": {
+      "addr": "0x417125",
+      "code": "80be<codecave:th18_card_unlocked>0090",
+      "expected": "80bc3088f5050000",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,imm8 [eax+esi+0x5f588] → [esi+SHADOW]（eax = 存档指针）"
+    },
+    "unlock_417ea3": {
+      "addr": "0x417ea3",
+      "code": "80b9<codecave:th18_card_unlocked>0090",
+      "expected": "80bc0188f5050000",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,imm8 [ecx+eax+0x5f588] → [ecx+SHADOW]（eax = 存档指针）"
+    },
+    "unlock_418df6": {
+      "addr": "0x418df6",
+      "code": "80bf<codecave:th18_card_unlocked>0090",
+      "expected": "80bc3e88f5050000",
+      "title": "unlocked_cards 读 → 影子数组：cmp m8,imm8 [esi+edi+0x5f588] → [edi+SHADOW]（esi = 存档指针）"
+    },
+    "unlock_418e15": {
+      "addr": "0x418e15",
+      "code": "8a80<codecave:th18_card_unlocked>90",
+      "expected": "8a840688f50500",
+      "title": "unlocked_cards 读 → 影子数组：mov r8,m8 [esi+eax+0x5f588] → [eax+SHADOW]（esi = 存档指针）"
     }
   },
   "breakpoints": {
@@ -709,6 +768,24 @@
       "cavesize": 5,
       "expected": "558bec6aff",
       "title": "自检门：ScoreFile__load 入口 → BP_ce_gate（填表 + 回读验证 + 写日志）"
+    },
+    "ce_unlock_write": {
+      "addr": "0x418e04",
+      "cavesize": 8,
+      "expected": "c6843e88f5050001",
+      "title": "mark_obtained 的写 → BP_ce_unlock_write：影子[id]=1；id<57 放行原指令写零售存档，否则写 side-car"
+    },
+    "ce_save_loaded": {
+      "addr": "0x46398a",
+      "cavesize": 6,
+      "expected": "8db3b8f40500",
+      "title": "ScoreFile__load 尾段 → BP_ce_save_loaded：影子[0..56] ← 零售存档，[57..] ← side-car"
+    },
+    "ce_unlock_all": {
+      "addr": "0x4648fe",
+      "cavesize": 6,
+      "expected": "8d8388f50500",
+      "title": "ScoreFile__unlock_all → BP_ce_unlock_all：影子[0..55]=1（镜像紧接着的 memset）"
     }
   }
 }
