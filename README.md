@@ -64,7 +64,7 @@ git clone <这个仓库> th18_modkit
 | mod | 组成 | 说明 |
 |---|---|---|
 | **鼠标操作自机** | patch `th18_mouse_control` + dll `th18_mouse.dll` | 鼠标直接驱动自机，F9 开关。**两个都要勾**。 |
-| **卡表搬迁 / 扩容** | patch `th18_card_expand` + dll `th18_card_expand.dll` | 把 `zTableCardData` 从 `.rdata` 搬进 codecave，给加卡腾空间。patch 负责改指令，dll 在 `post_init` 阶段填表并自检。**两个都要勾** —— 这对是生命周期耦合，检查栏查不出漏勾。 |
+| **卡表搬迁 / 扩容**（开发中） | patch `th18_card_expand`（步骤1，58 行）**或** `th18_card_expand_255`（步骤3，255 行+分配器）+ dll `th18_card_expand.dll` | 把 `zTableCardData` 从 `.data` 搬进 codecave，给加卡腾空间。patch 负责改指令，dll 在 `post_init` 阶段填表并自检。**patch 二选一 + dll 必勾** —— 这对是生命周期耦合，检查栏查不出漏勾。通过 = `game/th18_card_expand.log` 末尾 `OK … 100/100 sites verified`。`th18_card_expand_test` 是验证钩子，叠在步骤3 上只在测试时勾。源码与审计在 [renkolab](https://github.com/Renko6626/renkolab) `mods/th18.v1.00a/card-expand/`。 |
 | **坐标探针** | dll `th18_probe.dll` | 只读诊断：轮询自机坐标/定点数/focus/state，写 `game/th18_probe.log`。不需要 patch。 |
 
 ---
@@ -95,7 +95,9 @@ th18_modkit/
 │       ├── nmlgc/base_tsa/        ZUN 游戏引擎支持（版本识别），别动
 │       └── Renko_1055/            本项目的补丁仓库
 │           ├── renko/                 空白工作区，你自己的改动放这
-│           ├── th18_card_expand/      卡表搬迁 / 扩容的 binhack + codecave 声明
+│           ├── th18_card_expand/      卡表搬迁 步骤1（58 行）
+│           ├── th18_card_expand_255/  卡表搬迁 步骤3（255 行+分配器）
+│           ├── th18_card_expand_test/ 验证钩子
 │           └── th18_mouse_control/    鼠标 mod 的断点声明
 │
 ├── game/                      ← 游戏本体（不进仓库，你自己放）

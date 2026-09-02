@@ -1,0 +1,7 @@
+{
+	"id": "th18_card_expand_255",
+	"version": "0.1.0",
+	"title": "(18) 卡表搬迁 步骤3：255 行 + 分配器搬迁。需要 mods/th18_card_expand.dll。与步骤1 二选一。",
+	"dependencies": ["nmlgc/base_tsa"],
+	"update": false
+}

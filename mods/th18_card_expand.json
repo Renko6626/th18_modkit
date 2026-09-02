@@ -1,4 +1,4 @@
 {
 	"title": "卡表搬迁 / 扩容（填表 + 自检）",
-	"description": "th18_card_expand 补丁的运行时另一半，必须同时启用那个补丁。走 thcrap 的 post_init 生命周期钩子（导出 th18_card_expand_mod_post_init，thcrap 在 binhack 全部打完后自动调用），不是 BP_ 断点——所以启动器底部的断点交叉检查看不见这层依赖，漏勾补丁不会有任何提示。做三件事：1) 自检运行环境（th18 v1.00a、零售卡表签名 row0.id/row56.id、row56.internal_name == NULL），对不上就自行卸载；2) func_get(\"codecave:th18_card_table\") 拿到搬迁目标地址，把零售 58 行拷进去，拷完再核一遍；3) 逐个复查 binhack 站点是否真的打上了，没打全会打 partial application, DO NOT PLAY。日志写到 game/th18_card_expand.log。"
+	"description": "th18_card_expand 或 th18_card_expand_255 补丁的运行时另一半，必须同时启用其中一个（两个不能同时勾）。一份 DLL 配所有行数：行数与是否搬了分配器都在运行时从 patch 已写入的字节反推。走 thcrap 的 post_init 生命周期钩子（导出 th18_card_expand_mod_post_init，thcrap 在 binhack 全部打完后自动调用），不是 BP_ 断点——所以启动器底部的断点交叉检查看不见这层依赖，漏勾补丁不会有任何提示。做四件事：1) 加载时自检运行环境（零售卡表签名 row0.id/row56.id、row56.internal_name == NULL），对不上就自行卸载；2) func_get(\"codecave:th18_card_table\") 拿到搬迁目标，把零售 58 行拷进去，多出的行填 NULL 副本；_255 时还填跳转表并核对分配器两处 binhack；3) 逐个复查 100 处 binhack 站点是否真的打上了，没打全会打 partial application, DO NOT PLAY，并把分配器上界还原回零售值兜底；4) 日志写到 game/th18_card_expand.log，通过 = 末尾 OK … 100/100 sites verified。导出的 BP_ce_trace_alloc 只给 th18_card_expand_test 用，没勾测试补丁时启动器会提示「导出了但没被声明」，那是预期的。"
 }
