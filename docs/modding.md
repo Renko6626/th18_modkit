@@ -108,8 +108,12 @@ DLL 必须是 **32 位（x86）**。
 
 生命周期阶段有 `init` / `detour` / `post_init` / `repatch` / `exit` / `thread_exit`；
 thcrap 引擎自己就这么用（`steam_mod_post_init`、`motd_mod_post_init`、`strings_mod_init` …）。
-其中 `post_init` 在 binhack / codecave / breakpoint 全部应用完之后跑，是「codecave 已经
-分配好了，往里填数据」的时机 —— `th18_card_expand.dll` 走的就是这条。
+其中 `post_init` 在 binhack / codecave / breakpoint 全部应用完之后跑。
+**但对插件它实际上不会被调用**：thcrap 的 `plugin_init` 用 `std::unordered_map::merge` 把插件的
+钩子并进全局表，而 thcrap.dll 自己（`steam_mod_post_init` / `motd_mod_post_init`）先占了
+`post_init` 这个 key，后来者被静默丢弃，日志无一字（2024-11-06 与 master 同）。
+`th18_card_expand.dll` 第一版就栽在这，现改为断点 `ce_gate`。
+**要「全部 patch 应用完之后」的时点，用断点。**
 
 **注意这两种耦合的可检查性不一样**：`BP_` 那种启动器底部会自动交叉检查，
 `_mod_<阶段>` 那种启动器看不见，漏勾一边不会有任何提示。详见
