@@ -629,6 +629,78 @@
       "code": "ff249d<codecave:th18_card_jumptable>",
       "expected": "ff249dac2d4100",
       "title": "allocate_new_card: jmp [0x412dac+ebx*4] → 新跳转表"
+    },
+    "grow_4082d6": {
+      "addr": "0x4082d6",
+      "code": "686c110000",
+      "expected": "68700d0000",
+      "title": "zAbilityManager operator_new 分配：0xd70 → 0x116c"
+    },
+    "grow_4082ec": {
+      "addr": "0x4082ec",
+      "code": "686c110000",
+      "expected": "68700d0000",
+      "title": "zAbilityManager operator_new 的 memset：0xd70 → 0x116c"
+    },
+    "grow_40860a": {
+      "addr": "0x40860a",
+      "code": "686c110000",
+      "expected": "68700d0000",
+      "title": "zAbilityManager sized delete：0xd70 → 0x116c"
+    },
+    "grow_407eb0": {
+      "addr": "0x407eb0",
+      "code": "8dbb700d0000",
+      "expected": "8dbb840c0000",
+      "title": "reset_cards：lea edi,[mgr+owned]"
+    },
+    "grow_407eb6": {
+      "addr": "0x407eb6",
+      "code": "b9ff000000",
+      "expected": "b938000000",
+      "title": "reset_cards：rep stosd 项数 56 → 255"
+    },
+    "grow_412d42": {
+      "addr": "0x412d42",
+      "code": "c78487700d000001000000",
+      "expected": "c78487840c000001000000",
+      "title": "allocate_new_card 尾段：owned[id] = 1"
+    },
+    "grow_416f8f": {
+      "addr": "0x416f8f",
+      "code": "b9700d0000",
+      "expected": "b9840c0000",
+      "title": "商店循环起点 → +0xd70"
+    },
+    "grow_41744a": {
+      "addr": "0x41744a",
+      "code": "bb700d0000",
+      "expected": "bb840c0000",
+      "title": "商店循环起点 → +0xd70"
+    },
+    "grow_417535": {
+      "addr": "0x417535",
+      "code": "bb700d0000",
+      "expected": "bb840c0000",
+      "title": "商店循环起点 → +0xd70"
+    },
+    "grow_41716b": {
+      "addr": "0x41716b",
+      "code": "81f9500e0000",
+      "expected": "81f9640d0000",
+      "title": "商店循环上界 → +0xe50（仍只看前 56 个 id）"
+    },
+    "grow_417527": {
+      "addr": "0x417527",
+      "code": "81fb500e0000",
+      "expected": "81fb640d0000",
+      "title": "商店循环上界 → +0xe50（仍只看前 56 个 id）"
+    },
+    "grow_4175e7": {
+      "addr": "0x4175e7",
+      "code": "81fb500e0000",
+      "expected": "81fb640d0000",
+      "title": "商店循环上界 → +0xe50（仍只看前 56 个 id）"
     }
   },
   "breakpoints": {
