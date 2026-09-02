@@ -15,8 +15,13 @@
       "access": "RW",
       "title": "unlocked_cards 影子数组（256 字节，下标 = card id；DLL 填）"
     },
+    "th18_card_order": {
+      "size": "0x3fc",
+      "access": "RW",
+      "title": "显示顺序表搬迁目标（255 项；DLL 重排并追加新卡）"
+    },
     "th18_card_table_patch_init": {
-      "code": "fc60bf<codecave:th18_card_table>be<Rxc53c0>b9f2020000f3a5bbc5000000be<codecave:th18_card_table+b60>b90d000000f3a54b75f1bf<codecave:th18_card_jumptable>be<Rx12dac>b939000000f3a5b8<Rx11489>b9c6000000f3ab61c3",
+      "code": "fc60bf<codecave:th18_card_table>be<Rxc53c0>b9f2020000f3a5bbc5000000be<codecave:th18_card_table+b60>b90d000000f3a54b75f1bf<codecave:th18_card_jumptable>be<Rx12dac>b939000000f3a5b8<Rx11489>b9c6000000f3abbf<codecave:th18_card_order>be<Rxb3600>b939000000f3a5b839000000b9c6000000f3ab61c3",
       "export": true,
       "access": "RX",
       "title": "开机把零售表（与跳转表）拷进 codecave；DLL 的 post_init 是权威，这里是保险"
@@ -760,6 +765,168 @@
       "code": "8a80<codecave:th18_card_unlocked>90",
       "expected": "8a840688f50500",
       "title": "unlocked_cards 读 → 影子数组：mov r8,m8 [esi+eax+0x5f588] → [eax+SHADOW]（esi = 存档指针）"
+    },
+    "order_414401": {
+      "addr": "0x414401",
+      "code": "8b1495<codecave:th18_card_order>",
+      "expected": "8b149500364b00",
+      "title": "显示顺序表 → codecave（引用）"
+    },
+    "order_4145f8": {
+      "addr": "0x4145f8",
+      "code": "8b0c8d<codecave:th18_card_order>",
+      "expected": "8b0c8d00364b00",
+      "title": "显示顺序表 → codecave（引用）"
+    },
+    "order_414639": {
+      "addr": "0x414639",
+      "code": "ff3485<codecave:th18_card_order>",
+      "expected": "ff348500364b00",
+      "title": "显示顺序表 → codecave（引用）"
+    },
+    "order_41499f": {
+      "addr": "0x41499f",
+      "code": "b8<codecave:th18_card_order>",
+      "expected": "b800364b00",
+      "title": "显示顺序表 → codecave（引用）"
+    },
+    "order_414b54": {
+      "addr": "0x414b54",
+      "code": "3d<codecave:th18_card_order+3fc>",
+      "expected": "3de4364b00",
+      "title": "显示顺序表 → codecave（尾界 = 255 项）"
+    },
+    "order_415681": {
+      "addr": "0x415681",
+      "code": "8b0c85<codecave:th18_card_order>",
+      "expected": "8b0c8500364b00",
+      "title": "显示顺序表 → codecave（引用）"
+    },
+    "order_4156b6": {
+      "addr": "0x4156b6",
+      "code": "ff3485<codecave:th18_card_order>",
+      "expected": "ff348500364b00",
+      "title": "显示顺序表 → codecave（引用）"
+    },
+    "menu_413817": {
+      "addr": "0x413817",
+      "code": "68f8170000",
+      "expected": "68fc130000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_413831": {
+      "addr": "0x413831",
+      "code": "68f8170000",
+      "expected": "68fc130000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_413abb": {
+      "addr": "0x413abb",
+      "code": "68f8170000",
+      "expected": "68fc130000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_41495c": {
+      "addr": "0x41495c",
+      "code": "bfff000000",
+      "expected": "bf38000000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_4145d2": {
+      "addr": "0x4145d2",
+      "code": "8986100c0000",
+      "expected": "898618fbffff",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_414b3f": {
+      "addr": "0x414b3f",
+      "code": "89b010080000",
+      "expected": "89b018f7ffff",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_414b81": {
+      "addr": "0x414b81",
+      "code": "8d87fc130000",
+      "expected": "8d8704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_414beb": {
+      "addr": "0x414beb",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_414e9f": {
+      "addr": "0x414e9f",
+      "code": "8b8c8ffc130000",
+      "expected": "8b8c8f04030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_414eba": {
+      "addr": "0x414eba",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_415049": {
+      "addr": "0x415049",
+      "code": "8d87fc130000",
+      "expected": "8d8704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_415115": {
+      "addr": "0x415115",
+      "code": "8a8c8ffc130000",
+      "expected": "8a8c8f04030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_415129": {
+      "addr": "0x415129",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_41514a": {
+      "addr": "0x41514a",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_4151ef": {
+      "addr": "0x4151ef",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_41520c": {
+      "addr": "0x41520c",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_4152b4": {
+      "addr": "0x4152b4",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_4152d5": {
+      "addr": "0x4152d5",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_415868": {
+      "addr": "0x415868",
+      "code": "ffb487fc130000",
+      "expected": "ffb48704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
+    },
+    "menu_415e83": {
+      "addr": "0x415e83",
+      "code": "8d87fc130000",
+      "expected": "8d8704030000",
+      "title": "zAbilityMenu 扩容 / __card_ids → +0x13fc"
     }
   },
   "breakpoints": {
