@@ -99,7 +99,21 @@ thcrap 启动时遍历 `thcrap/bin` 下**所有** `.dll`，凡是导出 `thcrap_
 
 DLL 必须是 **32 位（x86）**。
 
-除了 `thcrap_plugin_init`，DLL 还可以导出 `BP_<名字>` 作为 breakpoint 处理函数。
+除了 `thcrap_plugin_init`，DLL 的导出表还有两种会被引擎认出来：
+
+| 导出名 | 什么时候被调用 |
+|---|---|
+| `BP_<名字>` | patch 里声明了同名 breakpoint，游戏执行到那个地址时 |
+| `<前缀>_mod_<阶段>` | 引擎跑到对应生命周期阶段时，**自动调用，patch 里不用声明** |
+
+生命周期阶段有 `init` / `detour` / `post_init` / `repatch` / `exit` / `thread_exit`；
+thcrap 引擎自己就这么用（`steam_mod_post_init`、`motd_mod_post_init`、`strings_mod_init` …）。
+其中 `post_init` 在 binhack / codecave / breakpoint 全部应用完之后跑，是「codecave 已经
+分配好了，往里填数据」的时机 —— `th18_card_expand.dll` 走的就是这条。
+
+**注意这两种耦合的可检查性不一样**：`BP_` 那种启动器底部会自动交叉检查，
+`_mod_<阶段>` 那种启动器看不见，漏勾一边不会有任何提示。详见
+[`adding-a-mod.md` C-3](adding-a-mod.md)。
 
 ### patch ↔ dll 的配对关系（重要）
 
@@ -133,45 +147,23 @@ dll    导出表           →  BP_mouse_move
 
 ## 加一个新 mod
 
-### 只有 DLL 的（比如纯诊断工具）
+三种形态，按需求挑一条：
 
-1. 编译成 32 位 DLL，导出 `thcrap_plugin_init()` 返回 0
-2. 丢进 `mods/`
-3. 可选：写个同名 `.json` 侧车，界面上会显示
+| 形态 | 要建的东西 | 例子 |
+|---|---|---|
+| **纯 patch** —— 改动能用「往这个地址写这几个字节」说完 | 补丁目录（`patch.js` + `th18.v1.00a.js` + `files.js`） | （暂无） |
+| **纯 DLL** —— 只读诊断、不挂在游戏某条指令上 | `mods/xxx.dll`（+ 可选同名 `.json` 侧车） | `th18_probe.dll` |
+| **patch + DLL** —— 要夺取控制权跑逻辑，或运行时往 codecave 里填数据 | 两个都要，靠 `断点名` ↔ `BP_断点名`，或靠 `_mod_<阶段>` 生命周期钩子对上 | `th18_mouse_control` + `th18_mouse.dll`<br>`th18_card_expand` + `th18_card_expand.dll` |
 
-```json
-{
-	"title": "判定点可视化",
-	"description": "在自机判定点画一个红圈，按 F9 开关。"
-}
-```
+**完整的分步流程、每个字段写什么、`files.js` 的 CRC32 怎么算、`repo.js` 怎么登记、
+完工自查脚本、常见坑速查表 —— 见 [`adding-a-mod.md`](adding-a-mod.md)。**
 
-4. 双击启动器，勾上它
+三条铁律，先记住：
 
-### DLL + patch 的（需要 hook 游戏代码）
-
-1. 建补丁目录 `thcrap/repos/Renko_1055/<你的补丁名>/`
-2. `patch.js`：
-
-```json
-{
-	"id": "th18_your_mod",
-	"version": "0.1.0",
-	"title": "(18) 一句话说明。Needs th18_your_mod.dll in mods/.",
-	"dependencies": ["base_tsa"],
-	"update": false
-}
-```
-
-`"update": false` 一定要写 —— 否则 thcrap 可能试图去服务器同步覆盖掉你的文件。
-
-3. `th18.v1.00a.js`：声明 breakpoint（见第 2 层）
-4. 在 `thcrap/repos/Renko_1055/repo.js` 的 `patches` 里登记一行（供 thcrap 官方 GUI 识别）
-5. DLL 丢进 `mods/`，导出对应的 `BP_<名字>`
-6. 启动器里**两个都勾上**，看检查栏是不是绿的
-
-> 补丁目录里必须有至少一个 `th18*` 的文件或目录，否则启动器会当它"跟本作无关"而隐藏
-> （控制台会打一行 `跳过与 th18 无关的补丁: xxx`）。
+- `patch.js` 里 **`"update": false` 一定要写** —— 否则 thcrap 可能去服务器同步，覆盖掉你的文件
+- 补丁目录里**必须**有至少一个 `th18*` 的文件或目录，否则启动器当它「跟本作无关」而隐藏
+  （控制台会打 `跳过与 th18 无关的补丁: xxx`）
+- 所有 json 存成 **UTF-8 无 BOM** —— thcrap 的解析器不吃 BOM
 
 ---
 

@@ -1,0 +1,4 @@
+{
+	"title": "卡表搬迁 / 扩容（填表 + 自检）",
+	"description": "th18_card_expand 补丁的运行时另一半，必须同时启用那个补丁。走 thcrap 的 post_init 生命周期钩子（导出 th18_card_expand_mod_post_init，thcrap 在 binhack 全部打完后自动调用），不是 BP_ 断点——所以启动器底部的断点交叉检查看不见这层依赖，漏勾补丁不会有任何提示。做三件事：1) 自检运行环境（th18 v1.00a、零售卡表签名 row0.id/row56.id、row56.internal_name == NULL），对不上就自行卸载；2) func_get(\"codecave:th18_card_table\") 拿到搬迁目标地址，把零售 58 行拷进去，拷完再核一遍；3) 逐个复查 binhack 站点是否真的打上了，没打全会打 partial application, DO NOT PLAY。日志写到 game/th18_card_expand.log。"
+}

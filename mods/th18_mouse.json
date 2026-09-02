@@ -1,4 +1,4 @@
 {
 	"title": "鼠标操作自机",
-	"description": "让鼠标直接驱动自机坐标，F9 开关。必须同时启用 th18_mouse_control 补丁——两个断点都在那边声明（mouse_move @ 0x45b170 cavesize 6；mouse_buttons @ 0x462966 cavesize 5），本 dll 只提供处理函数 BP_mouse_move / BP_mouse_buttons。运行日志写到 game\th18_mouse.log。客户区不是 4:3 时会自动永久停用。"
+	"description": "让鼠标直接驱动自机坐标，F9 开关。必须同时启用 th18_mouse_control 补丁——两个断点都在那边声明（mouse_move @ 0x45b170 cavesize 6；mouse_buttons @ 0x462966 cavesize 5），本 dll 只提供处理函数 BP_mouse_move / BP_mouse_buttons。运行日志写到 game/th18_mouse.log。客户区不是 4:3 时会自动永久停用。"
 }

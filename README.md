@@ -64,6 +64,7 @@ git clone <这个仓库> th18_modkit
 | mod | 组成 | 说明 |
 |---|---|---|
 | **鼠标操作自机** | patch `th18_mouse_control` + dll `th18_mouse.dll` | 鼠标直接驱动自机，F9 开关。**两个都要勾**。 |
+| **卡表搬迁 / 扩容** | patch `th18_card_expand` + dll `th18_card_expand.dll` | 把 `zTableCardData` 从 `.rdata` 搬进 codecave，给加卡腾空间。patch 负责改指令，dll 在 `post_init` 阶段填表并自检。**两个都要勾** —— 这对是生命周期耦合，检查栏查不出漏勾。 |
 | **坐标探针** | dll `th18_probe.dll` | 只读诊断：轮询自机坐标/定点数/focus/state，写 `game/th18_probe.log`。不需要 patch。 |
 
 ---
@@ -76,7 +77,8 @@ th18_modkit/
 ├── tools/modloader.ps1        ← 启动器本体（勾选界面 + 装配 + 拉起游戏）
 │
 ├── mods/                      ← DLL 插件放这
-│   ├── th18_mouse.dll  + .json    .json 是可选侧车，给界面提供标题和说明
+│   ├── th18_card_expand.dll + .json   .json 是可选侧车，给界面提供标题和说明
+│   ├── th18_mouse.dll  + .json
 │   ├── th18_probe.dll  + .json
 │   ├── enabled.default.json       首次运行的默认勾选（进仓库）
 │   └── enabled.json               你本机的勾选状态（不进仓库，自动生成）
@@ -93,11 +95,13 @@ th18_modkit/
 │       ├── nmlgc/base_tsa/        ZUN 游戏引擎支持（版本识别），别动
 │       └── Renko_1055/            本项目的补丁仓库
 │           ├── renko/                 空白工作区，你自己的改动放这
+│           ├── th18_card_expand/      卡表搬迁 / 扩容的 binhack + codecave 声明
 │           └── th18_mouse_control/    鼠标 mod 的断点声明
 │
 ├── game/                      ← 游戏本体（不进仓库，你自己放）
 └── docs/
     ├── setup.md               准备游戏文件、版本校验、首次运行
+    ├── adding-a-mod.md        加新 mod 的分步流程 + 自查脚本
     ├── modding.md             怎么写 mod：三层入口、patch↔dll 契约
     └── troubleshooting.md     排错
 ```
@@ -108,6 +112,7 @@ th18_modkit/
 
 - **[docs/setup.md](docs/setup.md)** — 从零开始，含版本校验和常见坑
 - **[docs/modding.md](docs/modding.md)** — 三层改法、patch 与 dll 的契约、怎么加新 mod
+- **[docs/adding-a-mod.md](docs/adding-a-mod.md)** — 加一个新 mod 的分步流程：三种形态、每个字段怎么写、完工自查脚本
 - **[docs/troubleshooting.md](docs/troubleshooting.md)** — 日志怎么读、症状对照表
 
 ---
