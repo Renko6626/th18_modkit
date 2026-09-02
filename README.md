@@ -64,7 +64,7 @@ git clone <这个仓库> th18_modkit
 | mod | 组成 | 说明 |
 |---|---|---|
 | **鼠标操作自机** | patch `th18_mouse_control` + dll `th18_mouse.dll` | 鼠标直接驱动自机，F9 开关。**两个都要勾**。 |
-| **卡表搬迁 / 扩容**（开发中） | patch `th18_card_expand`（步骤1，58 行）**或** `th18_card_expand_255`（步骤3，255 行+分配器）+ dll `th18_card_expand.dll` | 把 `zTableCardData` 从 `.data` 搬进 codecave，给加卡腾空间。patch 负责改指令，dll 在断点 `ce_gate`（`ScoreFile__load` 入口）里填表并自检。**patch 二选一 + dll 必勾**，检查栏能看见 `ce_gate` ↔ `BP_ce_gate` 这对。通过 = `game/th18_card_expand.log` 末尾 `OK … 100/100 sites verified`。`th18_card_expand_test` 是验证钩子，叠在步骤3 上只在测试时勾。源码与审计在 [renkolab](https://github.com/Renko6626/renkolab) `mods/th18.v1.00a/card-expand/`。 |
+| **卡表搬迁 / 扩容**（开发中） | patch `th18_card_expand`（步骤1，58 行）**或** `th18_card_expand_255`（步骤3，255 行+分配器）+ dll `th18_card_expand.dll` | 把 `zTableCardData` 从 `.data` 搬进 codecave，给加卡腾空间。patch 负责改指令，dll 在断点 `ce_gate`（`ScoreFile__load` 入口）里填表并自检。**patch 二选一 + dll 必勾**，检查栏能看见 `ce_gate` ↔ `BP_ce_gate` 这对。通过 = `game/th18_card_expand.log` 末尾 `OK … 100/100 sites verified`。步骤3 另外把卡牌解锁状态搬进影子数组：零售卡仍存 `scoreth18.dat`（逐字节不变），新卡存 `%APPDATA%\ShanghaiAlice\th18\th18_card_expand.sav`（卸载 mod 只丢新卡进度，不伤存档）。`th18_card_expand_test` 是验证钩子，叠在步骤3 上只在测试时勾（会在开局把 id 58 发到手上并自动「获得」它）。源码与审计在 [renkolab](https://github.com/Renko6626/renkolab) `mods/th18.v1.00a/card-expand/`。 |
 | **坐标探针** | dll `th18_probe.dll` | 只读诊断：轮询自机坐标/定点数/focus/state，写 `game/th18_probe.log`。不需要 patch。 |
 
 ---
