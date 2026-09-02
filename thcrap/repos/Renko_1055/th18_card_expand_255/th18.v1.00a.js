@@ -786,6 +786,24 @@
       "cavesize": 6,
       "expected": "8d8388f50500",
       "title": "ScoreFile__unlock_all → BP_ce_unlock_all：影子[0..55]=1（镜像紧接着的 memset）"
+    },
+    "ce_text_name": {
+      "addr": "0x416694",
+      "cavesize": 6,
+      "expected": "69cbc0010000",
+      "title": "文案重定向 → BP_ce_text_name：id<57 照算 id*0x1c0，否则指向 DLL 的扩展文案缓冲（FUN_00416540 卡名：imul ecx, ebx, 0x1c0）"
+    },
+    "ce_text_desc": {
+      "addr": "0x416779",
+      "cavesize": 7,
+      "expected": "69450cc0010000",
+      "title": "文案重定向 → BP_ce_text_desc：id<57 照算 id*0x1c0，否则指向 DLL 的扩展文案缓冲（FUN_00416540 说明 6 行：imul eax, [ebp+0xc], 0x1c0）"
+    },
+    "ce_text_notify": {
+      "addr": "0x41926a",
+      "cavesize": 6,
+      "expected": "69c3c0010000",
+      "title": "文案重定向 → BP_ce_text_notify：id<57 照算 id*0x1c0，否则指向 DLL 的扩展文案缓冲（获得通知：imul eax, ebx, 0x1c0）"
     }
   }
 }
