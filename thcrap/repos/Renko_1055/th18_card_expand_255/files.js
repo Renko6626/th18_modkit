@@ -2,7 +2,7 @@
   "patch.js": 1388925521,
   "th18.v1.00a.js": 2650089801,
   "th18/abcard.anm": 3318904938,
-  "th18/ability.anm": 4065862156,
+  "th18/ability.anm": 3532457117,
   "th18/cards.js": 128379290,
   "th18/voice.js": 520389331,
   "th18/voice/FIRELORD_ATTACK.wav": 3837150489,
